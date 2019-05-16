@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>
+            Ukkonen algorithm
+        </title>
+        <link rel="stylesheet" href="/styles.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"> </script>
+        <title>Andrii Dubas' homepage</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Keywords" content="Dubas">
+        <meta name="Description" content="Andrii Dubas' personal page">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    </head>
+
+    <style>
+        body { 
+            font-family: sans-serif;
+        }
+        h2 { font-family: serif; }
+        h3 { font-family: serif; }
+    </style>
+    <body>
+        <style>
+        img {
+            max-width: 100%;
+            height: auto;
+            width: auto\9;
+        }
+        </style>
+        <div id="topmenu"></div>
+        <div style="width: 80%; left: 10%; padding: 10%;">
+            <article>
+            <p> <a href="/articles/UkkonenAlgorithm/animationApp/index.html">interactional application for Ukkonen algorithm</a> </p>
+
+<p>Ukkonen algorithn is a linear-time method for creating a suffix tree <a href="https://en.wikipedia.org/wiki/Ukkonen%27s_algorithm"> wiki page </a> </p>
+
+<p>Here is an example for of a suffix tree for a word 'mississipi':</p>
+<p>
+<img src="images/mississipi.png">
+<p><span>Suffix tree for "mississipi" word </span></p>
+</p>
+The main advantage of it is that you can get any suffix of a word going from the root of the tree.
+
+<h2>Basic bricks. </h2>
+
+The algorihm performs 3 basic steps, which are:
+<ul>
+<li>1) Extending path label in leaf edges.</li>
+<li>2) A new leaf node creation</li>
+<li>3) Move within a trie. </li>
+</ul>
+<p>First step is done for every letter added to the trie (but the first one since we have nothing to expand), second and third might go with any combination.</p>
+
+<p>Let's go through examble to get initial grasp of the algorithm.</p>
+
+<p>Let's build the trie for a word: "abcax"</p>
+<p>1) adding 'a' to an empty trie.</p>
+<p>
+Here we have rule 2 only.
+</p>
+<p>
+2) adding 'b'
+
+- rule 1 - extending path of leaf nodes
+- rule 2 - add a new node
+</p>
+<p>
+3) adding 'c'
+
+- rule 1 - extending path of leaf nodes
+- rule 2 - add a new node
+</p>
+
+<p>
+4) adding 'a'
+</p>
+<p>
+- rule 1 - extending path
+- rule 3 - move within a trie.
+From our initial position (root) now we have a path to go by - branch "abc".
+Now we "stand" on a letter 'a' of 'abc' branch.
+</p>
+<p>
+5) adding 'x'
+</p>
+<p>
+- rule 1 - extending path
+- rule 2 - add a new node.
+Here we add a new node while "standing" within an edge. By adding a new node we split the existing one.
+Additionally, we add new node to the root node, but so far let's ignore it.
+</p>
+
+<!--
+    <p>
+    In order to remove algorithmic 
+</p>
+-->
+
+<p>
+
+    To put it simply:
+    <ul>
+     <li>- extend leaf nodes every time we put new letter to the trie. That step is mandatory for every new letter</li>
+     <li> - pointer is within a branch and the next letter in a branch is a letter we add to the extend the trie</li>
+     <img src="images/missis_to_mississ.jpg">
+     <p><span> moving within branch </span></p>
+     <p></p>
+     <p></p>
+     <li> - step onto next branch if there is next one which starts with a letter we currently processing</li>
+     <img src="images/switching_to_new_branch.jpg">
+     <p><span> progress to the next branch </span></p>
+     <p></p>
+     <li> - split current branch if a pointer stays in the middle of a branch and the next letter is not the same as the trie expanded with</li>
+     <img src="images/misssplit_branch.jpg">
+     <p><span> split a branch </span></p>
+     <p></p>
+     <li> - add new node if a pinter stays in node and there is no branch that starts with the letter we expand with</li>
+     <img src="images/add_new_node.jpg">
+     <p><span> add new node </span></p>
+     <p></p>
+    </ul>
+</p>
+<p>
+Here are very basics of the algorithm. We have more conceptions here to come. At the moment I'd strongly reccomend you
+to take a sheet and a pencil and exercise a bit to be sure you lerned that by heart. Let the new knowledge flow into your brain and form pattern.
+Here is some words to train: "trre", "trtre", "abcabd".
+You can check if the trie is correct by traversing the trie by every its suffix. Keep that feature in mind, it is important.
+</p>
+<p>
+Nice, mate, now you are ready to proceed.
+Let's build up "abcax" tree once more:
+</p>
+
+<img src="images/abcax_stage1.png"/>
+
+<p>Lets expand it further: "abcaxab"</p>
+<p>After splitting a node we return to the root (mind you, it won't be the universal case).</p>
+<p>A diligent reader might have a remark: "Hey, you told that the correct trie should be traverse by all suffixes. What about 'x'?"</p>
+<p>Yes, it a valid assuption. I don't want to get deep into detail at the point, let's just go to root and add 'x'.</p>
+After that we stay on root.
+
+<p>
+<img src="images/abcax.png"/>
+</p>
+<p>6) adding 'a'</p>
+
+<ul>
+<li>- rule 1 expanding leaf nodes.</li>
+<li>- rule 3 move within a trie.</li>
+</ul>
+<p>7) adding 'b'</p>
+<ul>
+    <li> - rule 1 expanding leaf nodes.</li>
+    <li> - rule 3 move within a trie.</li>
+</ul>
+<p>We get to the end of edge and jumped to the next edge.</p>
+<p>
+<img src="images/abcaxab.png">
+</p>
+<p>
+At the point that "jump" is a new thing for you. Think of it on your own.
+</p>
+
+<h2>Adding several nodes for the same letter</h2>
+
+<p>Ok, now try adding a new letter to our trie. For instance 'd'.</p>
+<p> <img src="images/abcaxabd_stage1.png"> </p>
+<p> Here we should add a few more 'd' nodes so that suffix trie meets condition of every suffix trie </p>
+(abcaxabd, bcaxabd, caxabd, axabd, xabd, abd, bd, d).
+<ul>
+<li>abcaxabd - traverse 'a' -> bcaxabd</li>
+<li>bcaxabd - traverse bcaxabd</li>
+<li>caxabd - traverse caxabd</li>
+<li>axabd - traverse 'a' -> xabd</li>
+<li>xabd - traverse xabd</li>
+<li>abd - traverse a -> b -> d</li>
+<li>bd - traverse b -> d ???</li>
+<li>d - traverse d?</li>
+</ul>
+<h3>Adding bd</h3>
+
+Ok, here is the hard part comes. To add the new node, we do the following things:
+<ul>
+<li>- increment index of suffix' start index.</li>
+<li>- decrement local index (the index we stand on) of an edge. That thing is optional, depends on implementation.
+    I have used global index.</li>
+</ul>
+<p>
+ Think of it within the context: we've just added  abd, we wanna add "bd". THINK.
+ Let's decrement local index. It is zero now, that means that we have to switch active node to our parent
+ Whitch is root. We have to add a length of edge to out local index (THINK).
+ Incrementing suffix' index means we switch current branch to the one that starts with 'b', out local index is 1.
+</p>
+ Here we activate:
+ 7) adding 'd'
+ <ul>
+ <li>- rule 1 expanding leaf nodes.</li>
+<li>- rule 2 add new node.</li>
+</ul>
+<p><img src="images/abcaxabd_stage2.png"></p>
+
+ the only thing remains is adding 'd' suffix. As was mentioned above, To add the new node, we do the following things:
+ <ul>
+ <li>- decrement local index (the index we stand on) of an edge</li>
+ <li>- increment index of suffix' start index.</li>
+</ul>
+ Our local index becomes 0, so that means we are on the root.
+ Here we activate:
+ 7) adding 'd'
+ <ul>
+<li>- rule 1 expanding leaf nodes</li>
+<li>- rule 2 add new node</li>
+</ul>
+ <p> <img src="images/abcaxabd_stage3.png"> </p>
+
+
+
+<h2>Conceptions: suffix reference</h2>
+
+<p>While building up a tree we employ the concept of <u>suffix reference</u>.</p>
+
+<p>Suppose we have 2 suffixes:</p>
+
+<ul>
+<li>abc *remaining string*</li>
+<li>bc  *remainig string (same) *</li> 
+</ul>
+lets put it into a form of a part of the suffix tree.
+
+<p> <img src="images/xabcyabcz_abc_prefix.png"> </p>
+<p>suffix reference for "xABCyABCz</p>
+
+
+The longer suffix refers to the shorter one. That reference means that we going to extend both branches similarly.
+Think of it the following way:
+we first add suffix "abcz", then "bcz", and thenever we add a node to "abc", the algorithm adds it to "bc"
+The example of it is on the picture below:
+<p><img src="images/mississipi_complete.png"></p>
+
+Check the branches issi and ssi. They have the same continuation, and it is not a coincidence. in that case "issi"
+branch has a suffix reference to "ssi". That causes them to have the same subtrie.
+
+<p>The following code does that switching: </p>
+
+<script src="https://gist.github.com/Andrey-Dubas/e89455da21d349383e7ddf216dc420d9.js"></script>
+
+First 'if' checks if we have a branch for suffix that starts with prefix i+1, where i is index of a branch we just have split.
+In case there is no branch for the i+1 index, algorithm jumps onto suffix ref, that we learned about before.
+
+<h2>Suffix reference creation</h2>
+
+Suffix reference of particular branch which represents <u>(i, n)</u> suffix is a reference to the branch that represents <u>(i, n)</u> suffix.
+Let's take a look on "mississipi" Example:
+<p><img src="images/mississip_before_p.png"></p>
+Last 4 characters 'issi' we were climbing up onto 'i' branch. So by the moment we don't have any branches for 'issi', 'ssi', 'si', 'i' suffixes.
+Think of it some time. Now we gonna add 'p' letter that is unique for now and that triggers creation of all these suffixes. So 1st step is to add "issi" suffix:
+<p><img src="images/mississi_and_1_stage_p.png"></p>
+See we created "issi" branch? So the next step is to make "ssi". Now algoritm should somehow do "ssi" for root (get onto 's' branch and onto 'sissip' later).
+Now we split 'sissip' branch.
+<p><img src="images/mississi_add_2nd_p.png"></p>
+Now we arranged "ssi" branch. At the moment we point <u>suffix reference</u> of "issi" node to "ssi" node. Now you, reader, should get it.
+Next step is to create "si" and put suffix reference of "ssi" onto "si".
+<p><img src="images/mississi_add_3rd_p.png"></p>
+And, finally, 'si' -> 'i':
+<p><img src="images/mississi_add_4th_p.png"></p>
+
+Let's check how we use suffix refs. Lets prolong the string so that algorithm climbs onto one of the branches that has suffix ref and see how it works, f.e. "mississipississt".
+Here is suffix tree for "mississipississ"
+<p><img src="images/mississipississ.png"></p>
+See we climbed up suffix "ississ". Now we don't have any branches that represent the suffix and sub-suffix. First step is to create a branch for "ississ":
+<p><img src="images/mississipississt_stage1.png"></p>
+A node that represents "issi" has a suffix reference to "ssi", so algorithm mowes there, keeping current branch index and local branch index the same.
+Now the path represents "ssiss", and we go on down to "is" suffix.
+<p><img src="images/mississipississt_suffix_si.png"></p>
+Till the moment we jumped by suffix references and the last suffix we created is "iss". Active node represents "i", current branch represented "ss".
+After adding last branch active node is the same, and current branch represents "s". We actially took subsuffix, but it happens that current branch is the same (because we have double s). Otherwise we would switch to another branch.
+
+The last thing we do is adding "t" suffix.
+<p><img src="images/mississipississt_final.png"></p>
+
+<h2>The part the author didn't get</h2>
+
+<p> There is a thing I find strange in this algorithm. Let's analyze the following case: we are building a tree for a word "mississipississt".
+    We have just added suffix 'iss' ("mississipiss|iss"), and switching to a part we gonna split a branch ("ss" suffix). Here is out initial position: </p>
+
+<p><img src="images/mississipississt_rollback_show.png"></p>
+
+The path to active node is 'i', current branch represents "ss" part of the string. Cool. Let's increase current branch index, and we will see that we are on the same branch.
+So he have 'i' for path up to active node + 's' for current branch. However, the suffix we are currently gonna build up is "ss"!
+I didn't find anything better then to traverse "ss" suffix from the root node for that case. Let me know if you find out how to deal with this situation properly.
+So my final code for splittion looks like that:
+
+<script src="https://gist.github.com/Andrey-Dubas/fd0f65f9065c41158db58fdb7e9f8353.js"></script>
+
+<h2>Conceptions: climbing up</h2>
+<p>
+    Every time algorithm grab the letter it has in next position, you may think of it the following way:
+    <ul>
+        <li> the path from root to current position is a suffix that has already been in the text. It is repeated substring.</li>
+        <li> there is no path from root to the end of trie for that particular suffix so far.
+            The 'remaining' variable shows us the length of that suffix. </li>
+        <li> When we add unique character to the trie we trigger a mechanism of creating suffix path for all suffixes.
+            Try building up "mississip" example: before 'p' letter is put there is no path 'issi' suffix. Adding 'p' fixes it. 
+        </li>
+        <li>
+            In the very end unique symbol is added to the trie. Why?
+        </li>
+    </ul> 
+</p>
+
+<h2>Usage</h2>
+
+<p>
+Ok, we implemented algorithm, now what to do with it?
+We can now find, for example, longest repeated substring. Think of the trie the following way:
+Once we created traversed a string (f.e "ississ"), it is represented by a path from root up to leaf node.
+</p>
+<p><img src="images/ississi.png"></p>
+So the next time this substring appears in text we gonna climb onto that path and create internal node. A path to any <u>internal</u> node is a repeated substring.
+
+<p>
+    References:
+    <ul>
+        <li> <a href="https://www.youtube.com/watch?v=aPRqocoBsFQ"> the best explanation YouTube video </a></li>
+    </ul>
+    <ul>
+        <li> <a href="https://github.com/Andrey-Dubas/UkkonenAlgorithm/blob/master/scripts/test/test_UkkonenAlgorithm.spec.js"> My unit-tests for the algorithm </a></li>
+    </ul>
+</p>
+        </article>
+    </div>
+</body>
+
+<script>
+    $(function() { $("#topmenu").load('/templates/top-navi.html'); })
+</script>
+</html>
