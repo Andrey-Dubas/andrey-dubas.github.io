@@ -151,13 +151,27 @@
                   of suffix) are grouped together and belongs to the same prefix.
                   </p>
                 <ul>
-                  <li>&nbsp;&nbsp;&nbsp; 2nd symbol's sort of a bucket. That step consists
+                  <li>2nd symbol's sort of a bucket. That step consists
                     of the following steps</li>
                   <ul>
-                    <li>Calculation of amount of suffixes (actually) that are belong to
-                      &nbsp; </li>
+                    <li> <b>Calculation of amount of sub-suffixes in buckets.</b> Let's assume we analyze suffix "abra". 2nd letter is 'b', so that sub-suffix belongs to 'b' bucket.</li>
+                    <li> <b>Get initial offset for a bucket</b>by just summing up previous buckets' amount</li>
+                    <li> <b>Fill up a bucket</b></li>
+                    <li> <b>Add new bucket that are based on 2 character</b></li>
                   </ul>
+
+                  <li>4 letters' sort of a bucket based on 2-letter buckets</li>
+		  <li> <ul> <li> ... </li> </ul> </li>
+
                 </ul>
+		<h2> Structures needed </h2>
+
+		<ul>
+		    <li> <b>order</b> an array that sets correspondence of initial position to where the suffix is in ordered suffix  </li>
+		    <li> <b>reverse</b> an array that sets correspondence of ordered position to initial one </li>
+		    <li> <b>bucketRefs</b> an array that sets a correspondence of ordered position to its bucket </li>
+		</ul>
+
                 <p>References: </p>
                 <ul>
                   <li><a href="https://en.wikipedia.org/wiki/Suffix_array">Suffix array
