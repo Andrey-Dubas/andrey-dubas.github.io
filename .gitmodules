@@ -1,3 +1,6 @@
 [submodule "articles/UkkonenAlgorithm/animationApp"]
 	path = articles/UkkonenAlgorithm/animationApp
 	url = https://github.com/Andrey-Dubas/UkkonenAlgorithm
+[submodule "articles/ManberMyers/animationApp"]
+	path = articles/ManberMyers/animationApp
+	url = https://github.com/Andrey-Dubas/ManberMyers.git
